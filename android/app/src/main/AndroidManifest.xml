@@ -2,7 +2,7 @@
     package="com.example.netflix_frontend_app">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="netflix_frontend_app"
+        android:label="BulutMD Movies"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
