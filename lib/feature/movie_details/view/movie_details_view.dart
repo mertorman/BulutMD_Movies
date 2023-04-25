@@ -21,14 +21,14 @@ class _Movie_DetailsState extends State<Movie_Details> {
   @override
   Widget build(BuildContext context) {
     return movieDetailsController.obx(
-        onLoading: Scaffold(
+        onLoading: const Scaffold(
             body: Center(
           child: CircularProgressIndicator(),
         )), (state) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar_Widget(),
-        bottomNavigationBar: Bottom_Bar(),
+        appBar: const AppBar_Widget(),
+        bottomNavigationBar: const Bottom_Bar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -164,7 +164,7 @@ class _Movie_DetailsState extends State<Movie_Details> {
                               maxCrossAxisExtent: 200,
                               childAspectRatio: 0.85,
                               crossAxisSpacing: 20,
-                              mainAxisSpacing: 20),
+                              mainAxisSpacing: 40),
                       itemCount: movieDetailsController.searchList.length,
                       itemBuilder: (BuildContext ctx, index) {
                         return Column(
@@ -180,23 +180,19 @@ class _Movie_DetailsState extends State<Movie_Details> {
                                             movieDetailsController
                                                 .searchList[index].imageUrl!,
                                         fit: BoxFit.fill))),
-                            SizedBox(
+                           const SizedBox(
                               height: 5,
                             ),
-                            Flexible(
-                              child: Container(
-                                child: Text(
-                                  movieDetailsController
-                                      .searchList[index].title!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                            Text(
+                              movieDetailsController
+                                  .searchList[index].title!,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Container(
