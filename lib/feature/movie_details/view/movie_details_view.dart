@@ -21,7 +21,7 @@ class _Movie_DetailsState extends State<Movie_Details> {
   void initState() {
     _IsSearching = false;
     _searchList = MoviesModels.movies;
-     _searchQuery.addListener(() {
+    _searchQuery.addListener(() {
       if (_searchQuery.text.isEmpty) {
         setState(() {
           _IsSearching = false;
@@ -38,13 +38,13 @@ class _Movie_DetailsState extends State<Movie_Details> {
     });
     super.initState();
   }
+
   List<MoviesModel> _buildSearchList() {
     if (_searchText.isEmpty) {
       return _searchList = MoviesModels.movies;
     } else {
       _searchList = MoviesModels.movies
           .where((element) =>
-
               element.title.toLowerCase().contains(_searchText.toLowerCase()))
           .toList();
       print('${_searchList.length}');
@@ -57,14 +57,13 @@ class _Movie_DetailsState extends State<Movie_Details> {
       _IsSearching = true;
     });
   }
-void _handleSearchEnd() {
+
+  void _handleSearchEnd() {
     setState(() {
-     
       _IsSearching = false;
       _searchQuery.clear();
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +139,16 @@ void _handleSearchEnd() {
                         thickness: 1,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            _searchList.sort(
+                              (a, b) {
+                                var r = b.year.compareTo(a.year);
+                                return r;
+                              },
+                            );
+                          });
+                        },
                         child: Text(
                           "Yeniye Göre Sırala",
                           style: GoogleFonts.poppins(fontSize: 16),
@@ -151,7 +159,16 @@ void _handleSearchEnd() {
                         thickness: 1,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            _searchList.sort(
+                              (a, b) {
+                                var r = a.year.compareTo(b.year);
+                                return r;
+                              },
+                            );
+                          });
+                        },
                         child: Text("Eskiye Göre Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       ),
@@ -159,13 +176,26 @@ void _handleSearchEnd() {
                           onTap: () {},
                           child: Divider(color: Colors.black, thickness: 1)),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            _searchList.sort(
+                              (a, b) {
+                                var r = b.puan.compareTo(a.puan);
+                                return r;
+                              },
+                            );
+                          });
+                        },
                         child: Text("Puana Göre Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       ),
                       Divider(color: Colors.black, thickness: 1),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            _searchList.shuffle();
+                          });
+                        },
                         child: Text("Rastgele Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       )
