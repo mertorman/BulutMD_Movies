@@ -1,35 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netflix_frontend_app/feature/home/model/movies_model.dart';
+import 'package:netflix_frontend_app/feature/home/controller/home_controller.dart';
+import 'package:netflix_frontend_app/feature/movie_details/controller/movie_details_controller.dart';
 import 'package:netflix_frontend_app/feature/movie_details/view/movie_details_view.dart';
 
 class MoviesContainer extends StatelessWidget {
-  MoviesContainer(
-      {super.key,
-      required this.title,
-      required this.movies,
-      required this.color,
-      required this.color2,
-      required this.index,
-      required this.length});
+  MoviesContainer({
+    super.key,
+    required this.title,
+    required this.color,
+    required this.color2,
+    required this.index,
+  });
   String title;
-  List<MoviesModel> movies;
   Color color;
   Color color2;
   int index;
-  int length;
+
   @override
   Widget build(BuildContext context) {
-    List<int> diziIndex = [];
-    List<int> filmIndex = [];
-    movies.asMap().forEach((index, value) {
-      if (value.category == 'Dizi') {
-        diziIndex.add(index);
-      } else {
-        filmIndex.add(index);
-      }
-    });
+    HomeController homeController = Get.find();
     return Container(
       height: MediaQuery.of(context).size.height * 0.31,
       width: MediaQuery.of(context).size.width,
@@ -38,7 +30,7 @@ class MoviesContainer extends StatelessWidget {
         color: color2,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60)),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(title,
@@ -46,51 +38,50 @@ class MoviesContainer extends StatelessWidget {
                   color: Colors.blueGrey,
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CarouselSlider.builder(
-              itemCount: length,
+              itemCount: this.index == 0
+                  ? homeController.trendTv.length
+                  : homeController.trendMovies.length,
               itemBuilder: (context, index, realIndex) {
-                if (this.index == 0 && movies[index].category == 'Dizi') {
+                if (this.index == 0) {
                   return InkWell(
                     onTap: () {
-                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Movie_Details(),
-                          ));
-                    
+                      homeController.allTvMovies = homeController.trendTv;
+                      homeController.baslik.value = 'Popüler Diziler';
+                      homeController.textFieldHintText.value = 'Dizi ara';
+                      Get.toNamed('/moviedetails');
                     },
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: SizedBox.fromSize(
                             size: Size.fromRadius(80),
-                            child: Image.asset(
-                                movies[diziIndex[index]].movieImages,
-                                fit: BoxFit.fill))),
-                  );
-                } else if (this.index == 1) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Movie_Details(),
-                          ));
-                    },
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: SizedBox.fromSize(
-                            size: Size.fromRadius(80),
-                            child: Image.asset(
-                                movies[filmIndex[index]].movieImages,
-                                fit: BoxFit.fill))),
+                            child: Image.network(
+                              'https://image.tmdb.org/t/p/w500' +
+                                  homeController.trendTv[index].imageUrl!,
+                            ))),
                   );
                 } else {
-                  return SizedBox.shrink();
+                  return InkWell(
+                    onTap: () {
+                      homeController.allTvMovies = homeController.trendMovies;
+                      homeController.baslik.value = 'Popüler Filmler';
+                      homeController.textFieldHintText.value = 'Film ara';
+                      Get.toNamed('/moviedetails');
+                    },
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: SizedBox.fromSize(
+                            size: Size.fromRadius(80),
+                            child: Image.network(
+                              'https://image.tmdb.org/t/p/w500' +
+                                  homeController.trendMovies[index].imageUrl!,
+                            ))),
+                  );
                 }
               },
               options: CarouselOptions(

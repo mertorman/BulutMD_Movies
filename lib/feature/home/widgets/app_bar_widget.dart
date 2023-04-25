@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppBar_Widget extends StatelessWidget implements PreferredSizeWidget {
-  AppBar_Widget({
+  const AppBar_Widget({
     super.key,
   });
 
@@ -21,7 +21,7 @@ class AppBar_Widget extends StatelessWidget implements PreferredSizeWidget {
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Image.asset('assets/images/logo.png',
