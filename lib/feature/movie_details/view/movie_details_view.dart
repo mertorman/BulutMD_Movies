@@ -12,6 +12,60 @@ class Movie_Details extends StatefulWidget {
 }
 
 class _Movie_DetailsState extends State<Movie_Details> {
+  final TextEditingController _searchQuery = TextEditingController();
+  late List<MoviesModel> _searchList;
+
+  late bool _IsSearching;
+  late String _searchText = "";
+  @override
+  void initState() {
+    _IsSearching = false;
+    _searchList = MoviesModels.movies;
+     _searchQuery.addListener(() {
+      if (_searchQuery.text.isEmpty) {
+        setState(() {
+          _IsSearching = false;
+          _searchText = "";
+          _buildSearchList();
+        });
+      } else {
+        setState(() {
+          _IsSearching = true;
+          _searchText = _searchQuery.text;
+          _buildSearchList();
+        });
+      }
+    });
+    super.initState();
+  }
+  List<MoviesModel> _buildSearchList() {
+    if (_searchText.isEmpty) {
+      return _searchList = MoviesModels.movies;
+    } else {
+      _searchList = MoviesModels.movies
+          .where((element) =>
+
+              element.title.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+      print('${_searchList.length}');
+      return _searchList;
+    }
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _IsSearching = true;
+    });
+  }
+void _handleSearchEnd() {
+    setState(() {
+     
+      _IsSearching = false;
+      _searchQuery.clear();
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +100,12 @@ class _Movie_DetailsState extends State<Movie_Details> {
                 width: MediaQuery.of(context).size.width * 0.85,
                 height: MediaQuery.of(context).size.height * 0.05,
                 child: TextField(
+                  controller: _searchQuery,
+                  onTap: () {
+                    setState(() {
+                      _handleSearchStart();
+                    });
+                  },
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     hintText: 'Film / Dizi / Oyuncu ara',
@@ -80,9 +140,7 @@ class _Movie_DetailsState extends State<Movie_Details> {
                         thickness: 1,
                       ),
                       InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Text(
                           "Yeniye Göre Sırala",
                           style: GoogleFonts.poppins(fontSize: 16),
@@ -93,28 +151,21 @@ class _Movie_DetailsState extends State<Movie_Details> {
                         thickness: 1,
                       ),
                       InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Text("Eskiye Göre Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       ),
                       InkWell(
-                        onTap: () {
-                          
-                        },child: Divider(color: Colors.black, thickness: 1)),
+                          onTap: () {},
+                          child: Divider(color: Colors.black, thickness: 1)),
                       InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Text("Puana Göre Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       ),
                       Divider(color: Colors.black, thickness: 1),
                       InkWell(
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Text("Rastgele Sırala",
                             style: GoogleFonts.poppins(fontSize: 16)),
                       )
@@ -133,7 +184,7 @@ class _Movie_DetailsState extends State<Movie_Details> {
                       childAspectRatio: 0.85,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20),
-                  itemCount: MoviesModels.movies.length,
+                  itemCount: _searchList.length,
                   itemBuilder: (BuildContext ctx, index) {
                     return Column(
                       children: [
@@ -142,10 +193,13 @@ class _Movie_DetailsState extends State<Movie_Details> {
                             child: SizedBox.fromSize(
                                 size: Size.fromRadius(90),
                                 child: Image.asset(
-                                    MoviesModels.movies[index].movieImages,
+                                    _searchList[index].movieImages,
                                     fit: BoxFit.fill))),
-                                    SizedBox(height: 5,),
-                                    Text(MoviesModels.movies[index].title, style: GoogleFonts.poppins(fontSize: 16))
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(_searchList[index].title,
+                            style: GoogleFonts.poppins(fontSize: 16))
                       ],
                     );
                   }),
