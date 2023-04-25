@@ -1,6 +1,5 @@
-import 'package:get/get.dart';
 import 'package:netflix_frontend_app/feature/home/model/model_movies.dart';
-import 'package:netflix_frontend_app/feature/utils/constants.dart';
+import 'package:netflix_frontend_app/utils/constants.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 class FetchMovies {

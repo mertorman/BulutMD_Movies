@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:netflix_frontend_app/feature/utils/routes.dart';
+import 'package:netflix_frontend_app/utils/routes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() => runApp(const MyApp());

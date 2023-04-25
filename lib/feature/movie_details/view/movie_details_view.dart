@@ -88,11 +88,13 @@ class _Movie_DetailsState extends State<Movie_Details> {
                     clipBehavior: Clip.antiAlias,
                     margin: EdgeInsets.zero,
                     child: ExpansionTile(
-                      
                       title: Obx(
-                        () => Text(movieDetailsController.defaultText.value,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(fontSize: 16)),
+                        () => Align(
+                          alignment: Alignment(0.15, 0),
+                          child: Text(movieDetailsController.defaultText.value,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(fontSize: 16)),
+                        ),
                       ),
                       children: [
                         Divider(
@@ -141,8 +143,7 @@ class _Movie_DetailsState extends State<Movie_Details> {
                           onTap: () {
                             movieDetailsController
                                 .textChange('Rastgele Sırala');
-                            movieDetailsController
-                                .listSort('Rastgele Sırala');
+                            movieDetailsController.listSort('Rastgele Sırala');
                           },
                           child: Text("Rastgele Sırala",
                               style: GoogleFonts.poppins(fontSize: 16)),
@@ -194,7 +195,39 @@ class _Movie_DetailsState extends State<Movie_Details> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                                width: MediaQuery.of(context).size.width * 0.13,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.035,
+                                padding: EdgeInsets.all(8),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.yellow.shade800,
+                                ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        movieDetailsController
+                                            .searchList[index].puan
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.white,
+                                        size: 12,
+                                      )
+                                    ])),
                           ],
                         );
                       }),
